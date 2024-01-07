@@ -1,0 +1,2 @@
+Отправляемые данные: {'name': 'user_619fa5e3-c62f-4fdd-9753-9dbecb1b278a', 'email': 'user_619fa5e3-c62f-4fdd-9753-9dbecb1b278a@example.com', 'password': 'password_619fa5e3-c62f-4fdd-9753-9dbecb1b278a', 'is_active': True, 'is_superuser': False, 'is_verified': False}
+Отправляемые данные: {'name': 'user_9c2e7525-84d7-4c09-8974-c5892bb25b9f', 'email': 'user_9c2e7525-84d7-4c09-8974-c5892bb25b9f@example.com', 'password': 'password_9c2e7525-84d7-4c09-8974-c5892bb25b9f', 'is_active': True, 'is_superuser': False, 'is_verified': False}

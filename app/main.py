@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, Depends
+from fastapi import FastAPI, HTTPException, Depends, Request
 from fastapi_users import FastAPIUsers
 
 from app.auth.auth import auth_backend
@@ -83,5 +83,7 @@ def hello():
 #         return {"test_key": value}
 #     except redis.RedisError as e:
 #         raise HTTPException(status_code=500, detail=f"Ошибка подключения к Redis: {e}")
+
+
 
 
