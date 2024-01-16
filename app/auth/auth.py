@@ -10,10 +10,10 @@ def get_redis_strategy() -> RedisStrategy:
     return RedisStrategy(redis_client, lifetime_seconds=3600)
 
 
-SECRET = "SECRET"
-
-def get_jwt_strategy() -> JWTStrategy:
-    return JWTStrategy(secret=SECRET, lifetime_seconds=3600)
+# SECRET = "SECRET"
+#
+# def get_jwt_strategy() -> JWTStrategy:
+#     return JWTStrategy(secret=SECRET, lifetime_seconds=3600)
 
 
 auth_backend = AuthenticationBackend(
