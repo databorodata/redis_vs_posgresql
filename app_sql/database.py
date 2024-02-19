@@ -7,10 +7,10 @@ from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker, declared_attr
 from sqlalchemy.ext.declarative import DeclarativeMeta, declarative_base
 
-from fastapi_users_db_sqlalchemy.access_token import (
-    SQLAlchemyAccessTokenDatabase,
-    SQLAlchemyBaseAccessTokenTable,
-)
+# from fastapi_users_db_sqlalchemy.access_token import (
+#     SQLAlchemyAccessTokenDatabase,
+#     SQLAlchemyBaseAccessTokenTable,
+# )
 
 from app.config import DB_HOST, DB_NAME, DB_PASS, DB_PORT, DB_USER
 # from sqlalchemy.orm import registry
@@ -20,11 +20,11 @@ Base: DeclarativeMeta = declarative_base()
 # mapper_registry = registry()
 # Base = mapper_registry.generate_base()
 
-
-class AccessToken(SQLAlchemyBaseAccessTokenTable[int], Base):
-    @declared_attr
-    def user_id(cls):
-        return Column(Integer, ForeignKey("user.id", ondelete="cascade"), nullable=False)
+#
+# class AccessToken(SQLAlchemyBaseAccessTokenTable[int], Base):
+#     @declared_attr
+#     def user_id(cls):
+#         return Column(Integer, ForeignKey("user.id", ondelete="cascade"), nullable=False)
 
 class User(SQLAlchemyBaseUserTable[int], Base):
     id = Column(Integer, primary_key=True)
@@ -54,5 +54,5 @@ async def get_user_db(session: AsyncSession = Depends(get_async_session)):
     yield SQLAlchemyUserDatabase(session, User)
 
 
-async def get_access_token_db(session: AsyncSession = Depends(get_async_session)):
-    yield SQLAlchemyAccessTokenDatabase(session, AccessToken)
+# async def get_access_token_db(session: AsyncSession = Depends(get_async_session)):
+#     yield SQLAlchemyAccessTokenDatabase(session, AccessToken)
