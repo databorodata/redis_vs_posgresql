@@ -1,10 +1,9 @@
-import uuid
 from typing import Optional
 
 from fastapi import Depends, Request
 from fastapi_users import BaseUserManager, IntegerIDMixin
 
-from app_sql.database import User, get_user_db
+from app.auth_sql.database import User, get_user_db
 
 SECRET = "SECRET"
 
@@ -27,5 +26,5 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
         print(f"Verification requested for user {user.id}. Verification token: {token}")
 
 
-async def get_user_manager(user_db=Depends(get_user_db)):
+async def get_sql_user_manager(user_db=Depends(get_user_db)):
     yield UserManager(user_db)

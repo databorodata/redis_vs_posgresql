@@ -1,0 +1,41 @@
+.
+├── app
+│   ├── auth_redis
+│   │   ├── auth.py
+│   │   ├── database.py
+│   │   ├── __init__.py
+│   │   ├── manager.py
+│   │   ├── __pycache__
+│   │   │   ├── auth.cpython-310.pyc
+│   │   │   ├── database.cpython-310.pyc
+│   │   │   ├── __init__.cpython-310.pyc
+│   │   │   ├── manager.cpython-310.pyc
+│   │   │   └── schemas.cpython-310.pyc
+│   │   └── schemas.py
+│   ├── auth_sql
+│   │   ├── auth.py
+│   │   ├── database.py
+│   │   ├── __init__.py
+│   │   ├── manager.py
+│   │   ├── __pycache__
+│   │   │   ├── database.cpython-310.pyc
+│   │   │   ├── __init__.cpython-310.pyc
+│   │   │   └── schemas.cpython-310.pyc
+│   │   └── schemas.py
+│   ├── config.py
+│   ├── __init__.py
+│   ├── main.py
+│   └── __pycache__
+│       ├── config.cpython-310.pyc
+│       ├── __init__.cpython-310.pyc
+│       └── main.cpython-310.pyc
+├── locustfile.py
+├── __pycache__
+│   ├── locustfile.cpython-310.pyc
+│   └── run.cpython-310.pyc
+├── README.md
+├── requirements.txt
+├── run.py
+└── structure.txt
+
+7 directories, 31 files
