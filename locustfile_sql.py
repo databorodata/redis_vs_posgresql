@@ -25,7 +25,7 @@ class UserBehavior(SequentialTaskSet):
     def register(self):
         if self.task_counter == 0:
             try:
-                response = self.client.post("/auth/sql_strategy/register", json=self.user_data)
+                response = self.client.post("/auth/sql/register", json=self.user_data)
                 if response.status_code == 201:
                     self.task_counter += 1
             except RequestException as e:
@@ -41,7 +41,7 @@ class UserBehavior(SequentialTaskSet):
                     "username": self.user_data['email'],
                     "password": self.user_data['password']
                 }
-                response = self.client.post("/auth/sql_strategy/login", data=data)
+                response = self.client.post("/auth/sql/login", data=data)
                 if response.status_code == 200:
                     self.task_counter += 1
                     response_data = response.json()
@@ -57,7 +57,7 @@ class UserBehavior(SequentialTaskSet):
         if self.task_counter == 2:
             try:
                 headers = {"Authorization": f"Bearer {self.token}"}
-                response = self.client.post("/auth/sql_strategy/logout", headers=headers)
+                response = self.client.post("/auth/sql/logout", headers=headers)
                 if response.status_code in [200, 204]:
                     self.task_counter += 1
             except RequestException as e:

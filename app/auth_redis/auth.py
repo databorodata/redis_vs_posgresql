@@ -3,7 +3,8 @@ from fastapi_users.authentication import CookieTransport, RedisStrategy, Authent
 from app.auth_redis.database import redis_client
 
 cookie_transport = CookieTransport(cookie_max_age=3600)
-bearer_transport = BearerTransport(tokenUrl="auth/redis_strategy/login")
+# bearer_transport = BearerTransport(tokenUrl="auth/redis_strategy/login")
+bearer_transport = BearerTransport(tokenUrl="/auth/redis")
 
 
 def get_redis_strategy() -> RedisStrategy:

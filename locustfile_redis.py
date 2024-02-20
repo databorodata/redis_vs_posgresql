@@ -3,6 +3,7 @@ import uuid
 from time import sleep
 
 from locust.exception import StopUser
+from requests import RequestException
 
 
 class UserBehavior(SequentialTaskSet):
@@ -25,37 +26,47 @@ class UserBehavior(SequentialTaskSet):
     def register(self):
         # print(self.user_data['name'], self.task_counter, 'register start')
         if self.task_counter == 0:
-            response = self.client.post("/auth/register", json=self.user_data)
-            # print(self.user_data['name'], 'register done', 'status_code:', response.status_code)
-            if response.status_code == 201:
-                self.task_counter += 1
+            try:
+                response = self.client.post("/auth/redis/register", json=self.user_data)
+                # print(self.user_data['name'], 'register done', 'status_code:', response.status_code)
+                if response.status_code == 201:
+                    self.task_counter += 1
+            except RequestException as e:
+                print(f"Ошибка при регистрации: {e}")
+                sleep(3)
+                self.register()
 
     @task
     def login(self):
-        # print(self.user_data['name'], self.task_counter, 'login start')
         if self.task_counter == 1:
-            data = {
-                "username": self.user_data['email'],
-                "password": self.user_data['password']
-            }
-            response = self.client.post("/auth/redis_strategy/login", data=data)
-            # print(self.user_data['name'], 'login done', 'status_code:', response.status_code)
-            if response.status_code == 200:
-                self.task_counter += 1
-                response_data = response.json()
-                if 'access_token' in response_data:
-                    self.token = response_data['access_token']
-                    # print(self.user_data['name'], 'token:', self.token)
+            try:
+                data = {
+                    "username": self.user_data['email'],
+                    "password": self.user_data['password']
+                }
+                response = self.client.post("/auth/redis/login", data=data)
+                if response.status_code == 200:
+                    self.task_counter += 1
+                    response_data = response.json()
+                    if 'access_token' in response_data:
+                        self.token = response_data['access_token']
+            except RequestException as e:
+                print(f"Ошибка при входе: {e}")
+                sleep(3)
+                self.login()
 
     @task
     def logout(self):
-        # print(self.user_data['name'], self.task_counter, 'logout start')
         if self.task_counter == 2:
-            headers = {"Authorization": f"Bearer {self.token}"}
-            response = self.client.post("/auth/redis_strategy/logout", headers=headers)
-            # print(self.user_data['name'], 'logout done', 'status_code:', response.status_code)
-            self.task_counter += 1
-            # print(self.user_data['name'], 'user---------------done')
+            try:
+                headers = {"Authorization": f"Bearer {self.token}"}
+                response = self.client.post("/auth/redis/logout", headers=headers)
+                if response.status_code in [200, 204]:
+                    self.task_counter += 1
+            except RequestException as e:
+                print(f"Ошибка при выходе: {e}")
+                sleep(3)
+                self.logout()
 
     def on_stop(self):
         super().on_stop()
@@ -64,7 +75,6 @@ class UserBehavior(SequentialTaskSet):
 
 
 class LookAroundUser(HttpUser):
-    # host = "http://localhost:8089"
     tasks = [UserBehavior]
     wait_time = between(5, 30)
 

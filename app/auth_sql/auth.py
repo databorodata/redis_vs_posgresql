@@ -4,7 +4,8 @@ from fastapi_users.authentication.strategy import AccessTokenDatabase, DatabaseS
 
 from app.auth_sql.database import AccessToken, get_access_token_db
 
-bearer_transport = BearerTransport(tokenUrl="auth/redis_strategy/login")
+# bearer_transport = BearerTransport(tokenUrl="auth/redis_strategy/login")
+bearer_transport = BearerTransport(tokenUrl="/auth/sql")
 
 
 def get_database_strategy(
