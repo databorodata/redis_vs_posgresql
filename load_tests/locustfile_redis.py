@@ -1,6 +1,6 @@
 from locust import HttpUser, between
 
-from tasks import UserBehavior
+from load_tests.tasks import UserBehavior
 
 
 class RedisUserBehavior(UserBehavior):
@@ -8,6 +8,6 @@ class RedisUserBehavior(UserBehavior):
 
 
 class LoadTestingRedis(HttpUser):
-    host = "http://localhost:8000"
+    # host = "http://localhost:8000"
     tasks = [RedisUserBehavior]
     wait_time = between(5, 30)

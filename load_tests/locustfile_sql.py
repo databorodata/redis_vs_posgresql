@@ -1,6 +1,6 @@
 from locust import HttpUser, between
 
-from tasks import UserBehavior
+from load_tests.tasks import UserBehavior
 
 
 class SqlUserBehavior(UserBehavior):
@@ -8,6 +8,7 @@ class SqlUserBehavior(UserBehavior):
 
 
 class LoadTestingSql(HttpUser):
-    host = "http://localhost:8000"
+    # host = "http://localhost:8000"
+    # host = "http://0.0.0.0:8000/"
     tasks = [SqlUserBehavior]
     wait_time = between(5, 30)

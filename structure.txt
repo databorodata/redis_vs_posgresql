@@ -36,19 +36,18 @@
 │       ├── __init__.cpython-310.pyc
 │       └── main.cpython-310.pyc
 ├── Dockerfile
-├── locustfile.py
-├── locustfile_redis.py
-├── locustfile_sql.py
+├── load_tests
+│   ├── locustfile_redis.py
+│   ├── locustfile_sql.py
+│   ├── __pycache__
+│   │   ├── locustfile_redis.cpython-310.pyc
+│   │   └── tasks.cpython-310.pyc
+│   └── tasks.py
 ├── __pycache__
-│   ├── locustfile.cpython-310.pyc
-│   ├── locustfile_redis.cpython-310.pyc
-│   ├── locustfile_sql.cpython-310.pyc
-│   ├── run.cpython-310.pyc
-│   └── tasks.cpython-310.pyc
+│   └── run.cpython-310.pyc
 ├── README.md
 ├── requirements.txt
 ├── run.py
-├── structure.txt
-└── tasks.py
+└── structure.txt
 
-7 directories, 44 files
+9 directories, 41 files

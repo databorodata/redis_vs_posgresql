@@ -1,11 +1,14 @@
-FROM python:3.8
+# Используйте официальный образ Python 3.9
+FROM python:3.9-slim
 
-# Установка Locust
-RUN pip install locust
+# Установите рабочий каталог в контейнере
+WORKDIR /app
 
-# Копирование Locust файла в контейнер
-COPY locustfile.py /locustfile.py
+# Копируйте файлы проекта в контейнер
+COPY . /app
 
-# Команда для запуска Locust
-CMD ["locust", "-f", "/locustfile.py", "--headless", "-u", "100", "-r", "10", "--run-time", "1m"]
+# Установите зависимости
+RUN pip install --no-cache-dir -r requirements.txt
 
+# Запустите приложение
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
