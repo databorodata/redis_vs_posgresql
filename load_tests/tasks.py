@@ -68,6 +68,12 @@ class UserBehavior(SequentialTaskSet):
                 self.logout()
 
     def on_stop(self):
-        super().on_stop()
         if self.task_counter >= 2:
             raise StopUser()
+        else:
+            super().on_stop()
+
+    # def on_stop(self):
+    #     super().on_stop()
+    #     if self.task_counter >= 2:
+    #         raise StopUser()

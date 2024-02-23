@@ -8,6 +8,6 @@ class RedisUserBehavior(UserBehavior):
 
 
 class LoadTestingRedis(HttpUser):
-    # host = "http://localhost:8000"
+    host = "http://localhost:8000"
     tasks = [RedisUserBehavior]
     wait_time = between(5, 30)
