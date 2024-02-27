@@ -2,16 +2,12 @@ FROM python:3.9-slim
 
 WORKDIR /load_tests
 
-# Установите Locust и любые другие зависимости
 RUN pip install locust
 
-# Копирование тестовых скриптов и файлов Locust
 COPY /load_tests /load_tests
 
-# Сделайте ваш скрипт исполняемым
 RUN chmod +x /load_tests/run_tests.sh
 
-# Запустите скрипт при старте контейнера
 CMD ["/load_tests/run_tests.sh"]
 
 

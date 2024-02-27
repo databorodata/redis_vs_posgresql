@@ -22,11 +22,11 @@ class UserCreate(schemas.BaseUserCreate):
     is_verified: Optional[bool] = False
     name: str
 
-
-class UserUpdate(schemas.BaseUserUpdate):
-    password: Optional[str] = None
-    email: Optional[EmailStr] = None
-    is_active: Optional[bool] = None
-    is_superuser: Optional[bool] = None
-    is_verified: Optional[bool] = None
-    name: Optional[str] = None
+#
+# class UserUpdate(schemas.BaseUserUpdate):
+#     password: Optional[str] = None
+#     email: Optional[EmailStr] = None
+#     is_active: Optional[bool] = None
+#     is_superuser: Optional[bool] = None
+#     is_verified: Optional[bool] = None
+#     name: Optional[str] = None

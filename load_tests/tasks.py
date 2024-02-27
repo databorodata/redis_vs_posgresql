@@ -1,16 +1,29 @@
+from time import sleep
+import psutil
 from locust import SequentialTaskSet, task
 import uuid
 from locust.exception import StopUser
 from requests import RequestException
-from time import sleep
+from datetime import datetime
 
 
 class UserBehavior(SequentialTaskSet):
     db_type: str
 
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.environment = parent.environment  # Сохраняем ссылку на environment
+
     def on_start(self):
         self.user_data = self.generate_user_data()
         self.task_counter = 0
+
+    def check_cpu_load(self):
+        cpu_load = psutil.cpu_percent(interval=1)
+        print(cpu_load)
+        if cpu_load > 2:
+            print(f"Высокая загрузка ЦП: {cpu_load}%. Остановка тестов.")
+            self.environment.runner.quit()
 
     def generate_user_data(self):
         unique_id = str(uuid.uuid4())
@@ -25,11 +38,13 @@ class UserBehavior(SequentialTaskSet):
 
     @task
     def register(self):
+        self.check_cpu_load()
         if self.task_counter == 0:
             try:
                 response = self.client.post(f"/auth/{self.db_type}/register", json=self.user_data)
                 if response.status_code == 201:
                     self.task_counter += 1
+                    print(datetime.now())
             except RequestException as e:
                 print(f"Ошибка при регистрации: {e}")
                 sleep(3)
@@ -37,6 +52,7 @@ class UserBehavior(SequentialTaskSet):
 
     @task
     def login(self):
+        self.check_cpu_load()
         if self.task_counter == 1:
             try:
                 data = {
@@ -56,12 +72,14 @@ class UserBehavior(SequentialTaskSet):
 
     @task
     def logout(self):
+        self.check_cpu_load()
         if self.task_counter == 2:
             try:
                 headers = {"Authorization": f"Bearer {self.token}"}
                 response = self.client.post(f"/auth/{self.db_type}/logout", headers=headers)
                 if response.status_code in [200, 204]:
                     self.task_counter += 1
+                    print(datetime.now())
             except RequestException as e:
                 print(f"Ошибка при выходе: {e}")
                 sleep(3)
@@ -72,8 +90,3 @@ class UserBehavior(SequentialTaskSet):
             raise StopUser()
         else:
             super().on_stop()
-
-    # def on_stop(self):
-    #     super().on_stop()
-    #     if self.task_counter >= 2:
-    #         raise StopUser()
