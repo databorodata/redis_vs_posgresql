@@ -12,15 +12,10 @@ fastapi_users_sql = FastAPIUsers[User, int](
     [sql_auth_backend],
 )
 
-router.include_router(
-    fastapi_users_sql.get_register_router(UserRead, UserCreate))
+router.include_router(fastapi_users_sql.get_register_router(UserRead, UserCreate))
 
 
-router.include_router(
-    fastapi_users_sql.get_auth_router(sql_auth_backend),)
+router.include_router(fastapi_users_sql.get_auth_router(sql_auth_backend))
 
 
-router.include_router(
-    fastapi_users_sql.get_auth_router(sql_auth_backend),
-    # prefix="/logout",
-)
+router.include_router(fastapi_users_sql.get_auth_router(sql_auth_backend),)

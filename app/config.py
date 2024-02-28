@@ -13,3 +13,6 @@ DB_PASS=os.environ.get("POSTGRES_PASSWORD")
 DB_PORT=os.environ.get("POSTGRES_PORT")
 DB_USER=os.environ.get("POSTGRES_USER")
 
+
+POOL_SIZE=int(os.environ.get("POOL_SIZE"))
+MAX_OVERFLOW=int(os.environ.get("MAX_OVERFLOW"))

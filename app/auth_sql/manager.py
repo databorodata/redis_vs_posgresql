@@ -1,8 +1,6 @@
 from typing import Optional
-
 from fastapi import Depends, Request
 from fastapi_users import BaseUserManager, IntegerIDMixin
-
 from app.auth_sql.database import User, get_user_db
 
 SECRET = "SECRET"
@@ -14,16 +12,6 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
 
     async def on_after_register(self, user: User, request: Optional[Request] = None):
         print(f"User {user.id} has registered.")
-
-    # async def on_after_forgot_password(
-    #     self, user: User, token: str, request: Optional[Request] = None
-    # ):
-    #     print(f"User {user.id} has forgot their password. Reset token: {token}")
-    #
-    # async def on_after_request_verify(
-    #     self, user: User, token: str, request: Optional[Request] = None
-    # ):
-    #     print(f"Verification requested for user {user.id}. Verification token: {token}")
 
 
 async def get_sql_user_manager(user_db=Depends(get_user_db)):

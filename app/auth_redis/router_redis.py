@@ -21,7 +21,4 @@ router.include_router(
     fastapi_users_redis.get_auth_router(redis_auth_backend))
 
 
-router.include_router(
-    fastapi_users_redis.get_reset_password_router(),
-    # prefix="/logout",
-)
+router.include_router(fastapi_users_redis.get_reset_password_router())

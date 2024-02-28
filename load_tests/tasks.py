@@ -5,7 +5,12 @@ import uuid
 from locust.exception import StopUser
 from requests import RequestException
 from time import time
+# from dotenv import load_dotenv
+import os
 
+# load_dotenv()
+
+CPU_THRESHOLD=int(os.environ.get("CPU_THRESHOLD"))
 
 cpu_loads = []
 start_time = time()
@@ -27,7 +32,7 @@ class UserBehavior(SequentialTaskSet):
         global cpu_loads, start_time
         cpu_load = psutil.cpu_percent(interval=1)
         cpu_loads.append(cpu_load)
-        if cpu_load > 90:
+        if cpu_load > CPU_THRESHOLD:
             print(f"Высокая загрузка ЦП: {cpu_load}%. Остановка тестов.")
             time_now = time()
             print(f"тесты продлились {time_now - start_time}")

@@ -1,4 +1,4 @@
-from fastapi_users.authentication import CookieTransport, RedisStrategy, AuthenticationBackend, JWTStrategy, BearerTransport
+from fastapi_users.authentication import CookieTransport, RedisStrategy, AuthenticationBackend, BearerTransport
 
 from app.auth_redis.database import redis_client
 

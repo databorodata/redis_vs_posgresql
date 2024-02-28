@@ -1,24 +1,25 @@
 from typing import AsyncGenerator
-
 from fastapi import Depends
 from fastapi_users.db import SQLAlchemyBaseUserTable, SQLAlchemyUserDatabase
 from sqlalchemy import Column, String, Boolean, Integer, ForeignKey
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker, declared_attr
 from sqlalchemy.ext.declarative import DeclarativeMeta, declarative_base
-
 from fastapi_users_db_sqlalchemy.access_token import (
     SQLAlchemyAccessTokenDatabase,
     SQLAlchemyBaseAccessTokenTable,
 )
 
-from app.config import DB_HOST, DB_NAME, DB_PASS, DB_PORT, DB_USER
-# from sqlalchemy.orm import registry
+from app.config import (DB_HOST,
+                        DB_NAME,
+                        DB_PASS,
+                        DB_PORT,
+                        DB_USER,
+                        POOL_SIZE,
+                        MAX_OVERFLOW)
 
 DATABASE_URL = f"postgresql+asyncpg://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 Base: DeclarativeMeta = declarative_base()
-# mapper_registry = registry()
-# Base = mapper_registry.generate_base()
 
 
 class AccessToken(SQLAlchemyBaseAccessTokenTable[int], Base):
@@ -37,7 +38,7 @@ class User(SQLAlchemyBaseUserTable[int], Base):
     is_verified: bool = Column(Boolean, default=False, nullable=False)
 
 
-engine = create_async_engine(DATABASE_URL, pool_size=300, max_overflow=0)
+engine = create_async_engine(DATABASE_URL, pool_size=POOL_SIZE, max_overflow=MAX_OVERFLOW)
 async_session_maker = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 
 

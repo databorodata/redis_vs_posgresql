@@ -1,10 +1,8 @@
 from fastapi import Depends
 from fastapi_users.authentication import AuthenticationBackend, BearerTransport
 from fastapi_users.authentication.strategy import AccessTokenDatabase, DatabaseStrategy
-
 from app.auth_sql.database import AccessToken, get_access_token_db
 
-# bearer_transport = BearerTransport(tokenUrl="auth/redis_strategy/login")
 bearer_transport = BearerTransport(tokenUrl="/auth/sql")
 
 
