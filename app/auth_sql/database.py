@@ -37,7 +37,7 @@ class User(SQLAlchemyBaseUserTable[int], Base):
     is_verified: bool = Column(Boolean, default=False, nullable=False)
 
 
-engine = create_async_engine(DATABASE_URL, pool_size=60, max_overflow=180)
+engine = create_async_engine(DATABASE_URL, pool_size=300, max_overflow=0)
 async_session_maker = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 
 

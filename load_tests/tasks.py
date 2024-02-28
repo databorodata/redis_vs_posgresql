@@ -4,7 +4,12 @@ from locust import SequentialTaskSet, task
 import uuid
 from locust.exception import StopUser
 from requests import RequestException
-from datetime import datetime
+from time import time
+
+
+cpu_loads = []
+start_time = time()
+print("Тесты стартовали")
 
 
 class UserBehavior(SequentialTaskSet):
@@ -19,10 +24,13 @@ class UserBehavior(SequentialTaskSet):
         self.task_counter = 0
 
     def check_cpu_load(self):
+        global cpu_loads, start_time
         cpu_load = psutil.cpu_percent(interval=1)
-        print(cpu_load)
-        if cpu_load > 2:
+        cpu_loads.append(cpu_load)
+        if cpu_load > 90:
             print(f"Высокая загрузка ЦП: {cpu_load}%. Остановка тестов.")
+            time_now = time()
+            print(f"тесты продлились {time_now - start_time}")
             self.environment.runner.quit()
 
     def generate_user_data(self):
@@ -44,7 +52,6 @@ class UserBehavior(SequentialTaskSet):
                 response = self.client.post(f"/auth/{self.db_type}/register", json=self.user_data)
                 if response.status_code == 201:
                     self.task_counter += 1
-                    print(datetime.now())
             except RequestException as e:
                 print(f"Ошибка при регистрации: {e}")
                 sleep(3)
@@ -79,7 +86,6 @@ class UserBehavior(SequentialTaskSet):
                 response = self.client.post(f"/auth/{self.db_type}/logout", headers=headers)
                 if response.status_code in [200, 204]:
                     self.task_counter += 1
-                    print(datetime.now())
             except RequestException as e:
                 print(f"Ошибка при выходе: {e}")
                 sleep(3)

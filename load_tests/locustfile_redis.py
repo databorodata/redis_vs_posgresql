@@ -1,6 +1,7 @@
 from locust import HttpUser, between, events
-from load_tests.tasks import UserBehavior
-from locust.runners import MasterRunner, LocalRunner, WorkerRunner
+from load_tests.tasks import UserBehavior, start_time, cpu_loads
+from time import time
+
 
 class RedisUserBehavior(UserBehavior):
     db_type: str = "redis"
@@ -12,18 +13,18 @@ class LoadTestingRedis(HttpUser):
     wait_time = between(5, 50)
 
 
-def stop_test_on_cpu_warning(environment, **kwargs):
-    """
-    Останавливает тест, если срабатывает предупреждение о высокой нагрузке на CPU.
-    """
-    print("Высокая нагрузка на CPU, останавливаем тесты.")
-    environment.runner.quit()
+@events.quitting.add_listener
+def get_redis_result(environment, **kw):
+    print("тесты завершены")
+    end_time = time()  # Засекаем время окончания теста
+    duration = end_time - start_time  # Общее время теста
 
+    # Расчет максимальной и средней нагрузки на CPU
+    max_cpu_load = max(cpu_loads) if cpu_loads else 0
+    avg_cpu_load = sum(cpu_loads) / len(cpu_loads) if cpu_loads else 0
 
-@events.init.add_listener
-def on_locust_init(environment, **kwargs):
-    """
-    Добавляет обработчик события cpu_warning.
-    """
-    if isinstance(environment.runner, (MasterRunner, LocalRunner, WorkerRunner)):
-        events.cpu_warning.add_listener(stop_test_on_cpu_warning)
+    # Запись результатов по нагрузке cpu и времени выполнения
+    with open("load_tests/result_redis/time_and_cpu_redis.txt", "w") as file:
+        file.write(f"Максимальная нагрузка CPU: {max_cpu_load}%\n")
+        file.write(f"Средняя нагрузка CPU: {avg_cpu_load}%\n")
+        file.write(f"Общее время теста: {duration} секунд\n")
