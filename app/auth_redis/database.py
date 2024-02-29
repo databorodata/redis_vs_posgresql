@@ -1,4 +1,3 @@
-import logging
 from random import randint
 from typing import Optional
 
@@ -12,9 +11,6 @@ import orjson
 
 REDIS_URL = f"redis://{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}"
 redis_client = redis.from_url(REDIS_URL, decode_responses=True)
-
-logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO)
 
 
 class User(BaseModel):
